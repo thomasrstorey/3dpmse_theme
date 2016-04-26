@@ -1,0 +1,27 @@
+{
+  "name": "additive",
+  "version": "0.1.0",
+  "main": "/",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "*.md",
+    "assets/css/sass/*",
+    "assets/css/src/*",
+    "assets/js/src/*",
+    "assets/js/vendor/*",
+    "images/src/*",
+    "tests",
+    "bootstrap.php",
+    "Gruntfile.js",
+    "package.json",
+    "composer.json",
+    "phpunit.xml.dist"
+  ],
+  "devDependencies": {},
+  "keywords": [],
+  "dependencies": {
+    "skeleton": "~2.0.4",
+    "font-awesome": "~4.6.1"
+  }
+}
