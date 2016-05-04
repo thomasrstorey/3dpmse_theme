@@ -24,10 +24,10 @@ get_header(); ?>
 		<?php endwhile; ?>
 	<?php endif; ?>
 		</div>
-		<div id="right-column" class="one-half column">
+		<div id="-post-list-right-column" class="one-half column">
 			<div id="sidebar-primary-row" class="row">
         <div id="sidebar-primary" class="sidebar">
-          <?php dynamic_sidebar('sidebar-2'); ?>
+          <?php dynamic_sidebar('sidebar-1'); ?>
         </div>
       </div>
 		</div>

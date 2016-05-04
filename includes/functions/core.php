@@ -81,7 +81,7 @@ function additive_widgets_init() {
     register_sidebar( array(
         'name'          => __( 'Primary Sidebar', 'additive' ),
         'id'            => 'sidebar-1',
-        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'before_widget' => '<div id="%1$s" class="additive-widget %2$s">',
         'after_widget'  => '</div>',
         'before_title'  => '<h3 class="widget-title">',
         'after_title'   => '</h3>',
@@ -90,7 +90,7 @@ function additive_widgets_init() {
 		register_sidebar( array(
         'name'          => __( 'Posts Page Sidebar', 'additive' ),
         'id'            => 'sidebar-2',
-        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'before_widget' => '<div id="%1$s" class="additive-widget %2$s">',
         'after_widget'  => '</div>',
         'before_title'  => '<h3 class="widget-title">',
         'after_title'   => '</h3>',
