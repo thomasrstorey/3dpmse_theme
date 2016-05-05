@@ -23,8 +23,8 @@ function setup() {
 	add_action( 'wp_head',            $n( 'header_meta' )          );
 	add_action( 'after_setup_theme',  $n( 'additive_navmenus' )    );
 	add_action( 'widgets_init',       $n( 'additive_widgets_init' ));
-
-	add_filter( 'use_default_gallery_style', false);
+	// add_filter( 'use_default_gallery_style', false);
+  add_filter( 'post_gallery', $n('additive_gallery'), 10, 3);
 	/*
 	 * Switch default core markup for search form, comment form, and comments
 	 * to output valid HTML5.
@@ -53,6 +53,7 @@ function setup() {
 	) );
 
 	add_theme_support('post-thumbnails', array('post', 'page'));
+
 }
 
 /**
@@ -212,4 +213,127 @@ function header_meta() {
 	$humanstxt = apply_filters( 'additive_humans', ADDITIVE_TEMPLATE_URL . '/humans.txt' );
 
 	echo '<link type="text/plain" rel="author" href="' . esc_url( $humanstxt ) . '" />';
+}
+
+/**
+
+*/
+function additive_gallery($output, $attr, $instance) {
+	$post = get_post();
+	$atts = shortcode_atts( array(
+		'order' 		 => 'ASC',
+		'orderby' 	 => 'menu_order ID',
+		'id'				 => $post ? $post->ID : 0,
+		'itemtag'		 => 'figure',
+		'icontag'		 => 'div',
+		'captiontag' => 'figcaption',
+		'columns'		 => 3,
+		'size'			 => 'thumbnail',
+		'include' 	 => '',
+		'exclude' 	 => '',
+		'link'			 => ''
+	), $attr, 'gallery');
+
+	$id = intval($atts['id']);
+
+	if(!empty($atts['include'])){
+		$_attachments = get_posts( array(
+			'include' => $atts['include'],
+			'post_status' => 'inherit',
+			'post_type' => 'attachment',
+			'post_mime_type' => 'image',
+			'order' => $atts['order'],
+			'orderby' => $atts['orderby'] ) );
+		$attachments = array();
+		foreach($_attachments as $key => $val){
+			$attachments[$val->ID] = $_attachments[$key];
+		}
+	} elseif(!empty($atts['exclude'])){
+		$attachments = get_children( array(
+			'post_parent' => $id,
+			'exclude' => $atts['exclude'],
+			'post_status' => 'inherit',
+			'post_type' => 'attachment',
+			'post_mime_type' => 'image',
+			'order' => $atts['order'],
+			'orderby' => $atts['orderby'] ) );
+	} else {
+		$attachments = get_children( array(
+			'post_parent' => $id,
+			'post_status' => 'inherit',
+			'post_type' => 'attachment',
+			'post_mime_type' => 'image',
+			'order' => $atts['order'],
+			'orderby' => $atts['orderby'] ) );
+	}
+
+	if(empty($attachments)){
+		return '';
+	}
+
+	$itemtag = tag_escape($atts['itemtag']);
+	$captag  = tag_escape($atts['captiontag']);
+	$icontag = tag_escape($atts['icontag']);
+	$valid_tags = wp_kses_allowed_html( 'post' );
+	if ( ! isset( $valid_tags[ $itemtag ] ) ) {
+		$itemtag = 'figure';
+	}
+	if ( ! isset( $valid_tags[ $captiontag ] ) ) {
+		$captiontag = 'figcaption';
+	}
+	if ( ! isset( $valid_tags[ $icontag ] ) ) {
+		$icontag = 'div';
+	}
+
+	$columns = intval( $atts['columns'] );
+	$itemwidth = $columns > 0 ? floor(100/$columns) : 100;
+	$selector = "additive-gallery-{$instance}";
+	$size_class = sanitize_html_class( $atts['size'] );
+
+	$gallery_div = "<div id='$selector' class='gallery galleryid-{$id} ";
+	$gallery_div .="gallery-columns-{$columns} gallery-size-{$size_class}'>";
+
+	$output .= $gallery_div;
+	$current_col = 0;
+	$i = 0;
+	foreach ($attachments as $id => $attachment) {
+		if ($current_col == 0) { //first column
+			if($i > 0){
+				$output .= "</div>";
+			}
+			$output .= "<div class='row'>";
+		}
+		$attr = ( trim( $attachment->post_excerpt ) ) ? array( 'aria-describedby' => "$selector-$id" ) : '';
+		if ( ! empty( $atts['link'] ) && 'file' === $atts['link'] ) {
+			$image_output = wp_get_attachment_link( $id, $atts['size'], false, false, false, $attr );
+		} elseif ( ! empty( $atts['link'] ) && 'none' === $atts['link'] ) {
+			$image_output = wp_get_attachment_image( $id, $atts['size'], false, $attr );
+		} else {
+			$image_output = wp_get_attachment_link( $id, $atts['size'], true, false, false, $attr );
+		}
+		$image_meta  = wp_get_attachment_metadata( $id );
+
+		$orientation = '';
+		if ( isset( $image_meta['height'], $image_meta['width'] ) ) {
+			$orientation = ( $image_meta['height'] > $image_meta['width'] ) ? 'portrait' : 'landscape';
+		}
+
+		$output .= "<{$itemtag} class='gallery-item'>";
+		$output .= "
+			<{$icontag} class='gallery-icon {$orientation}'>
+				$image_output
+			</{$icontag}>";
+		if ( $captiontag && trim($attachment->post_excerpt) ) {
+			$output .= "
+				<{$captiontag} class='wp-caption-text gallery-caption' id='$selector-$id'>
+				" . wptexturize($attachment->post_excerpt) . "
+				</{$captiontag}>";
+		}
+		$output .= "</{$itemtag}>";
+
+		$current_col = ($current_col + 1) % $columns;
+		$i++;
+	}
+	$output .= "</div></div>";
+	return $output;
 }

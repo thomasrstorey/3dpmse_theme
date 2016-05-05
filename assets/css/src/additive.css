@@ -557,7 +557,25 @@ a img.aligncenter {
 /* A Gallery item container,
 for 3, 2 and 4 column galleries */
 .gallery .gallery-item { }
-.gallery-columns-2 .gallery-item { float: left; max-width: 50%; margin-top: 0px; text-align: center;}
+.gallery .row {
+  margin-top: 10px;
+}
+.gallery .row:first-child {
+  margin-top: 0px;
+}
+.gallery-columns-2 .gallery-item {
+  float: left;
+  max-width: 45%;
+  margin-left: 10%;
+  text-align: center;
+}
+.gallery-columns-2 .gallery-item:first-child {
+  float: left;
+  max-width: 45%;
+  margin-left: 0px;
+  text-align: center;
+}
+
 .gallery-columns-4 .gallery-item { }
 
 /* The actual image inside a container
