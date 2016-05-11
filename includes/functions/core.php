@@ -23,8 +23,7 @@ function setup() {
 	add_action( 'wp_head',            $n( 'header_meta' )          );
 	add_action( 'after_setup_theme',  $n( 'additive_navmenus' )    );
 	add_action( 'widgets_init',       $n( 'additive_widgets_init' ));
-	// add_filter( 'use_default_gallery_style', false);
-  add_filter( 'post_gallery', $n('additive_gallery'), 10, 3);
+  add_filter( 'post_gallery', 			$n('additive_gallery'), 10, 3);
 	/*
 	 * Switch default core markup for search form, comment form, and comments
 	 * to output valid HTML5.
@@ -92,6 +91,15 @@ function additive_widgets_init() {
         'name'          => __( 'Posts Page Sidebar', 'additive' ),
         'id'            => 'sidebar-2',
         'before_widget' => '<div id="%1$s" class="additive-widget %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h3 class="widget-title">',
+        'after_title'   => '</h3>',
+    ) );
+
+		register_sidebar( array(
+        'name'          => __( 'Footer Sidebar', 'additive' ),
+        'id'            => 'footer-sidebar',
+        'before_widget' => '<div id="footer-widget-%1$s" class="footer-widget">',
         'after_widget'  => '</div>',
         'before_title'  => '<h3 class="widget-title">',
         'after_title'   => '</h3>',

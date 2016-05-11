@@ -10,9 +10,15 @@
 
 <section id="footer-section" class="footer-section">
 	<div id="footer-container" class="container">
-		
+		<?php
+		if(is_active_sidebar('footer-sidebar')){
+			dynamic_sidebar('footer-sidebar');
+		}
+		?>
 	</div>
 </section>
-	<?php wp_footer(); ?>
+	<?php
+		wp_footer(); 
+	 ?>
 	</body>
 </html>
