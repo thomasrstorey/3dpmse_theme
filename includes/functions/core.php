@@ -23,6 +23,8 @@ function setup() {
 	add_action( 'wp_head',            $n( 'header_meta' )          );
 	add_action( 'after_setup_theme',  $n( 'additive_navmenus' )    );
 	add_action( 'widgets_init',       $n( 'additive_widgets_init' ));
+  add_action( 'init',               $n( 'register_fablabs_post_type' ) );
+
   add_filter( 'post_gallery', 			$n('additive_gallery'), 10, 3);
 	/*
 	 * Switch default core markup for search form, comment form, and comments
@@ -51,7 +53,7 @@ function setup() {
 		'chat',
 	) );
 
-	add_theme_support('post-thumbnails', array('post', 'page'));
+	add_theme_support('post-thumbnails', array('post', 'page', 'additive_fab_lab'));
 
 }
 
@@ -78,19 +80,28 @@ function additive_navmenus() {
  */
 
 function additive_widgets_init() {
+	register_sidebar( array(
+			'name'          => __( 'Primary Sidebar', 'additive' ),
+			'id'            => 'primary-sidebar',
+			'before_widget' => '<div id="%1$s" class="widget %2$s">',
+			'after_widget'  => '</div>',
+			'before_title'  => '<h3 class="widget-title">',
+			'after_title'   => '</h3>',
+	) );
+
     register_sidebar( array(
-        'name'          => __( 'Primary Sidebar', 'additive' ),
-        'id'            => 'sidebar-1',
-        'before_widget' => '<div id="%1$s" class="additive-widget %2$s">',
+        'name'          => __( 'News Sidebar', 'additive' ),
+        'id'            => 'news-sidebar',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
         'after_widget'  => '</div>',
         'before_title'  => '<h3 class="widget-title">',
         'after_title'   => '</h3>',
     ) );
 
 		register_sidebar( array(
-        'name'          => __( 'Posts Page Sidebar', 'additive' ),
-        'id'            => 'sidebar-2',
-        'before_widget' => '<div id="%1$s" class="additive-widget %2$s">',
+        'name'          => __( 'Search Sidebar', 'additive' ),
+        'id'            => 'search-sidebar',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
         'after_widget'  => '</div>',
         'before_title'  => '<h3 class="widget-title">',
         'after_title'   => '</h3>',
@@ -101,8 +112,8 @@ function additive_widgets_init() {
         'id'            => 'footer-sidebar',
         'before_widget' => '<div id="footer-widget-%1$s" class="footer-widget">',
         'after_widget'  => '</div>',
-        'before_title'  => '<h3 class="widget-title">',
-        'after_title'   => '</h3>',
+        'before_title'  => '<h5 class="footer-widget-title">',
+        'after_title'   => '</h5>',
     ) );
 }
 
@@ -280,7 +291,7 @@ function additive_gallery($output, $attr, $instance) {
 	}
 
 	$itemtag = tag_escape($atts['itemtag']);
-	$captag  = tag_escape($atts['captiontag']);
+	$captiontag  = tag_escape($atts['captiontag']);
 	$icontag = tag_escape($atts['icontag']);
 	$valid_tags = wp_kses_allowed_html( 'post' );
 	if ( ! isset( $valid_tags[ $itemtag ] ) ) {
@@ -344,4 +355,32 @@ function additive_gallery($output, $attr, $instance) {
 	}
 	$output .= "</div></div>";
 	return $output;
+}
+
+function register_fablabs_post_type () {
+	//register facilities post type
+	$labels = array(
+        'name'               => _x( 'Fab Labs', 'post type general name', 'additive_tcp' ),
+        'singular_name'      => _x( 'Fab Lab', 'post type singular name', 'additive_tcp' ),
+        'menu_name'          => _x( 'Fab Labs', 'admin menu', 'additive_tcp' ),
+        'name_admin_bar'     => _x( 'Fab Lab', 'add new on admin bar', 'additive_tcp' ),
+        'add_new'            => _x( 'Add New', 'fablab', 'additive_tcp' ),
+        'add_new_item'       => __( 'Add New Fab Lab', 'additive_tcp' ),
+        'new_item'           => __( 'New Fab Lab', 'additive_tcp' ),
+        'edit_item'          => __( 'Edit Fab Lab', 'additive_tcp' ),
+        'view_item'          => __( 'View Fab Lab', 'additive_tcp' ),
+        'all_items'          => __( 'All Fab Labs', 'additive_tcp' ),
+        'search_items'       => __( 'Search Fab Labs', 'additive_tcp' ),
+        'parent_item_colon'  => __( 'Parent Fab Lab:', 'additive_tcp' ),
+        'not_found'          => __( 'No fab labs found.', 'additive_tcp' ),
+        'not_found_in_trash' => __( 'No fab labs found in Trash.', 'additive_tcp' )
+    );
+	register_post_type('additive_fab_lab', array(
+		'labels' => $labels,
+		'description' => 'Fab Labs which will appear on the Fab Labs page.',
+		'public' => true,
+		'hierarchical' => false,
+		'capability_type' => 'post',
+		'supports' => array('title', 'editor', 'custom-fields', 'thumbnail')
+	));
 }

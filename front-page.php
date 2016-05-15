@@ -47,10 +47,10 @@ function frontpage_get_featured_image_url () {
 				if($meta["icon"]){
 					$icon = $meta["icon"][0];
 				}
-				if($meta["blurb"]){
+				if(isset($meta["blurb"])){
 					$blurb = $meta["blurb"][0];
 				}
-				if($meta["jumbotron-color"]){
+				if(isset($meta["jumbotron-color"])){
 					$color = $meta["jumbotron-color"][0];
 				}
 				$jumbo = sprintf('<a href="%s"><div id="jumbotron-column-post-%d" class="jumbotron-column %s">', get_permalink(), $pid, $coltype);
@@ -65,4 +65,16 @@ function frontpage_get_featured_image_url () {
 	</div>
 </div>
 
-<?php include_once "additive-page_two-column.php" ?>
+<?php
+	include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+	$plugin_active = is_plugin_active( 'additive-double-post/additive-two-column-post.php' );
+	$has_second_column = get_post_meta($post->ID, 'additive_two_column_post', true);
+
+	if ( $plugin_active && $has_second_column ) {
+	  include_once "additive-page_two-column.php";
+	} else {
+	  include_once "additive-page_sidebar.php";
+	}
+
+	get_footer();
+?>

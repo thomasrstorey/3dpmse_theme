@@ -9,14 +9,25 @@
 .container {
   max-width: 1440px;
 }
-
-body {
-  font-family: 'Lato', sans-serif;
+html {
+  min-height: 100%;
   position: relative;
 }
 
+body {
+  font-family: 'Lato', sans-serif;
+  margin: 0 0 750px;
+}
+
+@media (min-width: 865px) {
+  body {
+    margin: 0 0 650px;
+  }
+
+}
+
 #content-section {
-  margin-bottom: 350px;
+
 }
 
 figure {
@@ -450,13 +461,81 @@ img {
   margin: 10px 0px;
 }
 
+.fablab-row {
+  clear: both;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0px 0px 5px -1px #B2B2B7;
+  margin-top: 30px;
+    padding: 20px;
+}
+
+.fablab-row:first-child {
+  margin-top: 0px;
+}
+
 #footer-section {
   background: #6C9AC3;
   position: absolute;
   left: 0px;
-  bottom: -350px;
-  height: 300px;
+  bottom: 0px;
+  height: 700px;
   width: 100%;
+  color: #fff;
+}
+
+#footer-container {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.footer-widget {
+  width:100%;
+  margin-left: 0px;
+  float:left;
+}
+
+.footer-widget:first-child{
+  margin-left: 0px;
+}
+
+.footer-img {
+  float:left;
+  max-width: 50%;
+}
+
+@media (min-width: 865px) {
+
+  .footer-img {
+    float:left;
+    max-width: 75%;
+  }
+
+  #footer-section {
+    background: #6C9AC3;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    height: 600px;
+    width: 100%;
+  }
+
+.footer-widget {
+  width:30%;
+  margin-left: 5%;
+  float:left;
+}
+
+.footer-widget:first-child{
+  margin-left: 0px;
+}
+
+}
+
+.footer-widget a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #fff;
 }
 
 /* =WordPress Core
@@ -608,3 +687,14 @@ for 3, 2 and 4 column galleries */
 /* Pick the second line break if two
 line breaks are adjacent */
 .gallery br+br { }
+
+/* =AnsPress Resets
+-------------------------------------------------------------- */
+
+#anspress {
+  font-family: 'Lato', sans-serif;
+}
+
+#anspress h1, #anspress h2, #anspress h3, #anspress h4, #anspress h5, #anspress h6{
+  font-family: 'Lato', sans-serif;
+}

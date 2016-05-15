@@ -1,12 +1,15 @@
 <?php
 /**
- * The main template file
+ * The search template file
  *
  * @package Additive
  * @since 0.1.0
  */
 
-get_header(); ?>
+get_header();
+
+?>
+
 <div id="content-container" class="container">
 	<div id="post-list-left-column" class="one-half column">
 	<h2><?php wp_title(''); ?></h2>
@@ -27,10 +30,14 @@ get_header(); ?>
 		<div id="-post-list-right-column" class="one-half column">
 			<div id="sidebar-primary-row" class="row">
         <div id="sidebar-primary" class="sidebar">
-          <?php dynamic_sidebar('news-sidebar'); ?>
+          <?php dynamic_sidebar('search-sidebar'); ?>
         </div>
       </div>
 		</div>
 </div>
 
-<?php get_footer();
+<?php
+
+get_footer();
+
+?>
