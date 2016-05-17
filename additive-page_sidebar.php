@@ -1,9 +1,14 @@
 <div id="content-container" class="container">
 
+      <?php if ( have_posts() ) : ?>
+        <?php while ( have_posts() ): the_post();
 
-      <div id="left-column" class="one-half column">
-        <?php if ( have_posts() ) : ?>
-      		<?php while ( have_posts() ): the_post(); ?>
+        if(get_post_format() == 'gallery') :
+        ?>
+          <div id="left-column" class="twelve columns">
+        <?php else : ?>
+          <div id="left-column" class="one-half column">
+        <?php endif; ?>
 
 			   <div id="content-row-<?php the_ID(); ?>" class="row">
 				    <h2><?php the_title(); ?></h2>
@@ -14,7 +19,7 @@
      <?php endif; ?>
 
       </div>
-
+    <?php if(get_post_format() != 'gallery') : ?>
         <div id="right-column" class="one-half column">
         <?php
           $imgurl =  get_bloginfo('template_url').'/default_img.jpg';
@@ -29,4 +34,5 @@
           </div>
         </div>
       </div>
+    <?php endif ?>
 </div>

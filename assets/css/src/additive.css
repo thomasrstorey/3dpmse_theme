@@ -669,6 +669,32 @@ for 3, 2 and 4 column galleries */
   text-align: center;
 }
 
+.gallery-columns-3 .gallery-item {
+  float: left;
+  max-width: 30%;
+  margin-left: 5%;
+  text-align: center;
+}
+.gallery-columns-3 .gallery-item:first-child {
+  float: left;
+  max-width: 30%;
+  margin-left: 0px;
+  text-align: center;
+}
+
+.gallery-columns-4 .gallery-item {
+  float: left;
+  max-width: 20%;
+  margin-left: 6%;
+  text-align: center;
+}
+.gallery-columns-4 .gallery-item:first-child {
+  float: left;
+  max-width: 20%;
+  margin-left: 0px;
+  text-align: center;
+}
+
 .gallery-columns-4 .gallery-item { }
 
 /* The actual image inside a container
