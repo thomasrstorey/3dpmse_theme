@@ -29,17 +29,43 @@ get_header();
         ?>
         <div class="fablab-row">
           <div class="one-half column">
-            <h3><?php the_title(); ?></h3>
-            <p><?php the_content(); ?></p>
+								<div class="row">
+									<a href="<?php the_permalink(); ?>"><h4><?php the_title(); ?></h4></a>
+			            <?php
+												// the_content();
+												// get meta - location, list of capabilities, contact name and email.
+												$location = get_post_meta($post->ID, 'location', true);
+												$location_link = get_post_meta($post->ID, 'location_link', true);
+												$capabilities = explode(",", get_post_meta($post->ID, 'capabilities', true));
+												$contact_name = get_post_meta($post->ID, 'contact_name', true);
+												$contact_email = get_post_meta($post->ID, 'contact_email', true);
+												printf("<p><strong>Location:</strong> %s  <strong><a href='%s'><i class='fa fa-map-marker' aria-hidden='true'></i></a></strong></p>", $location, $location_link);
+												echo "<p><strong>Capabilities:</strong> ";
+												$keys = array_keys($capabilities);
+												$last_key = end($keys);
+												foreach ($capabilities as $key => $capability) {
+													if($key == $last_key){
+														printf("%s", $capability);
+													} else {
+														printf("%s, ", $capability);
+													}
+												}
+												echo "</p>";
+									 		 printf('<p><strong>Contact:</strong> %s  <strong><a href="mailto:%s"><i class="fa fa-envelope-o" aria-hidden="true"></i></strong></a></p>', $contact_name, $contact_email);
+												?>
+								</div>
+
           </div>
-          <div class="one-half column">
+          <div class="one-half column fablabs-right">
+							<div class="row fablabs-right">
             <?php
               if(has_post_thumbnail()){
-    					   $imgurl = get_the_post_thumbnail_url();
-                 printf('<img id="fablab-featured-img" class="single-img" src="%s"/>', $imgurl);
+											 $thumbnail = get_the_post_thumbnail_url($post->ID, 'full');
+											 printf("<div class='fablabs-thumbnail' style='background-image: url(%s);'></div>", $thumbnail);
                }
              ?>
           </div>
+						 </div>
         </div>
         <?php
         endwhile;
